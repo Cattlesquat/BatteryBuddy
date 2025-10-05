@@ -52,11 +52,11 @@ namespace BatteryBuddy
                 bool usePopup = Options.GetOptionBool("OptionBatteryBuddyPopup");
                 if (XRL.Rules.Stat.RandomCosmetic(0, 99) < 50)
                 {
-                    XRL.World.Capabilities.Messaging.XDidY(E.Cell.SlottedIn, "emit", Extra: "a sad hiss as its energy cell gives up", UsePopup: usePopup);
+                    XRL.World.Capabilities.Messaging.XDidY(E.Cell.SlottedIn, "emit", Extra: "a sad hiss as its energy cell gives up", UsePopup: usePopup, Color: "W");
                 }
                 else
                 {
-                    XRL.World.Capabilities.Messaging.XDidY(E.Cell.SlottedIn, "sizzle and pop", Extra: "as it runs out of power", UsePopup: usePopup);
+                    XRL.World.Capabilities.Messaging.XDidY(E.Cell.SlottedIn, "sizzle and pop", Extra: "as it runs out of power", UsePopup: usePopup, Color: "W");
                 }
             }
 

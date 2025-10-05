@@ -1,7 +1,7 @@
 {
 	"id": "BatteryBuddy",
 	"title": "{{lovesickness|Battery Buddy}}",
-	"description": "Lets you know when an energy cell installed in one of your equipped items runs out of power!\n\nhttps://github.com/Cattlesquat/BatteryHelper.git",
+	"description": "Lets you know when an energy cell installed in one of your equipped items runs out of power! An Options setting lets you decide whether that's done via popup or just a log message.\n\nThanks to librarianmage for helpful suggestions and cleanup.\n\nhttps://github.com/Cattlesquat/BatteryHelper.git",
 	"tags": "Stable,Beta,UI,UX,Ability",
 	"version": "1.0.0",
 	"author": "{{ubernostrum|Cattlesquat}}"
