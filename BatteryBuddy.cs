@@ -8,16 +8,17 @@ using XRL.World.Anatomy;
 using XRL.World.Parts;
 using XRL.World.Parts.Skill;
 
-namespace BatteryHelper
+namespace BatteryBuddy
 {
     [HasCallAfterGameLoadedAttribute]
-    public class BatteryHelper : IPlayerPart
+    public class BatteryBuddy : IPlayerPart
     {
-        public static readonly string MOD_ID = "BatteryHelper";
+        public static readonly string MOD_ID = "BatteryBuddy";
         
         public override void Register(GameObject Object, IEventRegistrar Registrar)
         {
             Registrar.Register("EquipperUnequipped");
+            base.Register(Object, Registrar);
         }
 
         public override bool FireEvent(Event E)
@@ -48,13 +49,14 @@ namespace BatteryHelper
         {
             if (E.Cell.SlottedIn != null)
             {
-                if (XRL.Rules.Stat.RandomCosmetic(1, 2) == 1)
+                bool usePopup = Options.GetOptionBool("OptionBatteryBuddyPopup");
+                if (XRL.Rules.Stat.RandomCosmetic(0, 99) < 50)
                 {
-                    XRL.UI.Popup.Show("Your " + E.Cell.SlottedIn.ShortDisplayName + " emits a sad hiss as its energy cell gives up.");
+                    XRL.World.Capabilities.Messaging.XDidY(E.Cell.SlottedIn, "emit", Extra: "a sad hiss as its energy cell gives up", UsePopup: usePopup);
                 }
                 else
                 {
-                    XRL.UI.Popup.Show("Your " + E.Cell.SlottedIn.ShortDisplayName + " sizzles and pops as it runs out of power.");
+                    XRL.World.Capabilities.Messaging.XDidY(E.Cell.SlottedIn, "sizzle and pop", Extra: "as it runs out of power", UsePopup: usePopup);
                 }
             }
 
@@ -70,36 +72,25 @@ namespace BatteryHelper
 
         public void RegisterEquipment(GameObject GO)
         {
-            if (GO == null) return;
-            foreach (BodyPart part in GO.Body?.GetParts())
-            {
-                if (part.Equipped == null) continue;
-                part.Equipped.RegisterEvent(this, XRL.World.CellDepletedEvent.ID);
-            }
+            GO?.ForeachEquippedObject((GO) => GO.RegisterEvent(this, CellDepletedEvent.ID));
         }
         
         public void UnregisterEquipment(GameObject GO)
         {
-            if (GO == null) return;
-            foreach (BodyPart part in GO.Body?.GetParts())
-            {
-                if (part.Equipped == null) continue;
-                part.Equipped.UnregisterEvent(this, XRL.World.CellDepletedEvent.ID);
-            }
+            GO?.ForeachEquippedObject((GO) => GO.UnregisterEvent(this, CellDepletedEvent.ID));
         }
         
         public void Initialize()
         {
             // ensure registration for all existing equipment when loading a new save
-            RegisterEquipment(XRL.Core.XRLCore.Core?.Game?.Player?.Body);
+            RegisterEquipment(XRL.The.Player);
         }
         
         [CallAfterGameLoadedAttribute]
         public static void LoadGameCallback()
         {
             // Called whenever loading a save game
-            var player = XRL.Core.XRLCore.Core?.Game?.Player?.Body;
-            player.RequirePart<BatteryHelper>().Initialize();
+            XRL.The.Player.RequirePart<BatteryBuddy>().Initialize();
         }
 	}
     
@@ -108,7 +99,7 @@ namespace BatteryHelper
     {
         public void mutate(GameObject player)
         {
-            player.RequirePart<BatteryHelper>().Initialize();
+            player.RequirePart<BatteryBuddy>().Initialize();
         }
     }
 }

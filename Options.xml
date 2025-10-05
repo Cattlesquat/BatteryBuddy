@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<options>
+	<option ID="OptionBatteryBuddyPopup" DisplayText="{{lovesickness|Battery Buddy}}: Show popups when an equipped item's energy cell becomes depleted" Category="Prompts" Type="Checkbox" Default="Yes"/>
+</options>
