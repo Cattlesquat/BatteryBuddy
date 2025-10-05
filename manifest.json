@@ -1,0 +1,8 @@
+{
+	"id": "Battery Helper",
+	"title": "{{pearly|Battery Helper}}",
+	"description": "Lets you know when an energy cell installed in one of your equipped items runs out of power!\n\nhttps://github.com/Cattlesquat/BatteryHelper.git",
+	"tags": "Stable,Beta,UI,UX,Ability",
+	"version": "1.0.0",
+	"author": "{{ubernostrum|Cattlesquat}}"
+}
