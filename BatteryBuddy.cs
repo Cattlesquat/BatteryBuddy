@@ -13,7 +13,13 @@ namespace BatteryBuddy
         public override void Register(GameObject Object, IEventRegistrar Registrar)
         {
             Registrar.Register("EquipperUnequipped");
+            RegisterAllEquipment(Object, Registrar);
             base.Register(Object, Registrar);
+        }
+
+        public void RegisterAllEquipment(GameObject Object, IEventRegistrar Registrar)
+        {
+            Object.ForeachEquippedObject(GO => Registrar.Register(GO, CellDepletedEvent.ID));
         }
 
         public override bool FireEvent(Event E)
@@ -28,7 +34,7 @@ namespace BatteryBuddy
 
         public override bool WantEvent(int ID, int cascade)
         {
-            return base.WantEvent(ID, cascade) || ID == EquipperEquippedEvent.ID || ID == AfterPlayerBodyChangeEvent.ID;
+            return base.WantEvent(ID, cascade) || ID == EquipperEquippedEvent.ID;
         }
 
         public override bool HandleEvent(EquipperEquippedEvent E)
@@ -58,34 +64,11 @@ namespace BatteryBuddy
             return base.HandleEvent(E);
         }
 
-        public override bool HandleEvent(AfterPlayerBodyChangeEvent E)
-        {
-            UnregisterEquipment(E.OldBody);
-            RegisterEquipment(E.NewBody);
-            return base.HandleEvent(E);
-        }
-
-        public void RegisterEquipment(GameObject GO)
-        {
-            GO?.ForeachEquippedObject((GO) => GO.RegisterEvent(this, CellDepletedEvent.ID));
-        }
-
-        public void UnregisterEquipment(GameObject GO)
-        {
-            GO?.ForeachEquippedObject((GO) => GO.UnregisterEvent(this, CellDepletedEvent.ID));
-        }
-
-        public void InitializeRegistration()
-        {
-            // ensure registration for all existing equipment when loading a new save
-            RegisterEquipment(The.Player);
-        }
-
         [CallAfterGameLoaded]
         public static void LoadGameCallback()
         {
             // Called whenever loading a save game
-            The.Player.RequirePart<BatteryBuddy>().InitializeRegistration();
+            The.Player.RequirePart<BatteryBuddy>();
         }
 	}
 
@@ -94,7 +77,7 @@ namespace BatteryBuddy
     {
         public void mutate(GameObject player)
         {
-            player.RequirePart<BatteryBuddy>().InitializeRegistration();
+            player.RequirePart<BatteryBuddy>();
         }
     }
 }
