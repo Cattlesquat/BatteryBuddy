@@ -1,0 +1,8 @@
+{
+  "WorkshopId": 3581413989,
+  "Title": "Battery Buddy",
+  "Description": "Lets you know when an energy cell installed in one of your equipped items runs out of power! An Options setting lets you decide whether that's done via popup or just a log message.\r\n\r\nThanks to librarianmage for helpful suggestions and cleanup.\r\n\r\nhttps://github.com/Cattlesquat/BatteryHelper.git",
+  "Tags": "stable, beta, UI, UX",
+  "Visibility": "2",
+  "ImagePath": "preview.png"
+}
